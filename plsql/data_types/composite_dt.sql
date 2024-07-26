@@ -76,7 +76,7 @@ BEGIN
 END;
 /
 --
--- SQL ADT Collection using VARRAY
+-- SQL ADT(Attribute Data type) Collection using VARRAY
 --
 CREATE OR REPLACE 
     TYPE ora_demo.name_varray IS VARRAY (5) OF VARCHAR2(30);
@@ -103,3 +103,158 @@ BEGIN
     END LOOP;
 END;
 /
+--
+-- SQL UDT (User-defined type) Collection: A UDT collection in SQL requires that 
+-- you define a collection of a SQL UDT. SQL UDT IS OBJECT that we have defined 
+-- before. It's defined at the DB level as object.
+--
+DROP TYPE ora_demo.person_tab;
+DROP TYPE ora_demo.person_t;
+--
+CREATE OR REPLACE 
+    TYPE ora_demo.person_t IS OBJECT
+    (
+        name VARCHAR2 (30),
+        age NUMBER
+        -- CONSTRUCTOR FUNCTION person_t RETURN SELF AS RESULT
+        -- MEMBER FUNCTION get_name RETURN VARCHAR2,
+        -- MEMBER FUNCTION set_name (name VARCHAR2) RETURN person_t,
+        -- MEMBER FUNCTION to_string RETURN VARCHAR2
+    )
+    /* specifies that any object instance and subtype of this type can be created  */
+    -- INSTANTIABLE NOT FINAL; 
+/    
+--
+GRANT EXECUTE ON ora_demo.person_t TO ORADEV21;
+--
+CREATE OR REPLACE
+    TYPE ora_demo.person_tab IS TABLE OF ora_demo.person_t;
+/    
+--
+GRANT EXECUTE ON ora_demo.person_tab TO ORADEV21;
+--
+DECLARE
+    lv_person_table ora_demo.person_tab :=  ora_demo.person_tab (
+                                                                ora_demo.person_t(NULL, NULL)
+                                                                );
+BEGIN
+    lv_person_table.EXTEND;
+    lv_person_table(1) := ora_demo.person_t('John', 40);
+    DBMS_OUTPUT.PUT_LINE('Name: ' || lv_person_table(1).name);
+END;
+/
+--
+-- Object Table function using UDT using TABLE operator. 
+-- The following example will return a collection of Object types using a function
+-- functions which returns UDT collection objects using TABLE operator from SELECT
+--
+CREATE OR REPLACE FUNCTION ora_demo.get_person
+        RETURN ora_demo.person_tab IS
+    
+    lv_person_table ora_demo.person_tab :=  ora_demo.person_tab (
+                                                                ora_demo.person_t(NULL, NULL)
+                                                                );
+    BEGIN 
+        lv_person_table.EXTEND;
+        lv_person_table(1) := ora_demo.person_t('John', 40);
+        lv_person_table.EXTEND;
+        lv_person_table(2) := ora_demo.person_t('Smith', 50);
+        lv_person_table.EXTEND;
+        lv_person_table(3) := ora_demo.person_t('Joan', 20);
+        lv_person_table.EXTEND;
+        lv_person_table(4) := ora_demo.person_t('Keyes', 55);
+        lv_person_table.EXTEND;
+        lv_person_table(5) := ora_demo.person_t('Patrick', 55);
+        RETURN lv_person_table;
+    END;
+/
+--
+SELECT 
+    NAME AS PERSON_NAME, AGE AS PERSON_AGE
+FROM 
+    TABLE(ora_demo.get_person());
+--
+-- PL/SQL Collection: PL/SQL collections are declared as TYPE inside PL/SQL block and 
+-- not maintained as schema objects in the Database as SQL collections.
+--
+-- There are four types of PL/SQL collections:
+--
+-- ADT Collections (TABLE OF and VARRAY)
+-- Associative Arrays of Scalar Variables
+-- Associative Arrays of Composite Variables
+-- UDT Collections 
+--
+-- ADT Collections: 
+-- Following examples shows PL/SQL ADT collections. 
+-- We can also define VARRAY collections of fixed length. 
+--
+set serveroutput on
+DECLARE
+    TYPE num_table IS TABLE OF NUMBER;
+    /* if we do not initialize the following variable, it'll give error in EXTEND */
+    /* ORA-06531: Reference to uninitialized collection */
+    -- lv_collection num_table;
+    lv_collection num_table := num_table(1,2);
+BEGIN   
+    lv_collection.EXTEND;
+    lv_collection (lv_collection.COUNT) := 3;
+    /* the following line will give error as we did not EXTEND the collection */
+    -- lv_collection (4) := 4;
+    FOR i IN 1 .. lv_collection.COUNT 
+    LOOP
+        DBMS_OUTPUT.PUT_LINE('lv_collection'|| i|| ': ' || lv_collection(i));
+    END LOOP;
+END;
+/
+--
+-- Associative Arrays of Scalar Variables:
+--
+-- Associative Array are oldest PL/SQL collections. They can only be defined inside 
+-- PL/SQL blocks. Associative arrays cannot be initialized because you must assign 
+-- values one at a time to them.
+--
+-- One advantage of Associative array is they can be used for Key-value pair structure.
+--
+set serveroutput on
+DECLARE
+    TYPE numbers IS TABLE OF NUMBER INDEX BY VARCHAR2(2);
+    lv_num_collection numbers;
+BEGIN 
+    lv_num_collection ('NJ') := 10002104;
+    lv_num_collection ('MD') := 10002105;
+    lv_num_collection ('IL') := 10002106;
+    lv_num_collection ('CA') := 10002107;
+    DBMS_OUTPUT.PUT_LINE('NJ Pin Code:' || lv_num_collection('NJ'));
+    DBMS_OUTPUT.PUT_LINE('CA Pin Code:' || lv_num_collection('CA'));
+END;
+/
+--
+-- Associative Arrays of Composite Variables 
+--
+DECLARE
+    TYPE person IS RECORD
+    (
+        id NUMBER,
+        name VARCHAR2(20)
+    );
+    TYPE person_tab IS TABLE OF person INDEX BY BINARY_INTEGER;
+    person_db person_tab;
+BEGIN   
+    person_db(1).id := 1;
+    person_db(1).name := 'Tim';
+    person_db(2).id := 2;
+    person_db(2).name := 'Bill';
+    person_db(3).id := 3;
+    person_db(3).name := 'Mike';
+
+    FOR i IN 1 .. person_db.COUNT 
+    LOOP
+        DBMS_OUTPUT.PUT_LINE('Name: ' || person_db(i).name);
+        DBMS_OUTPUT.PUT_LINE('ID: ' || person_db(i).id);
+    END LOOP;
+END;
+/
+
+
+
+
