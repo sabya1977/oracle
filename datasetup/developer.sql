@@ -49,4 +49,22 @@ grant CREATE ANY MATERIALIZED VIEW to developer;
 grant DROP ANY VIEW to developer;
 grant CREATE ANY VIEW to developer;
 --
-grant developer to soe;
+create user oradev23 identified by oracle
+default tablespace users
+temporary tablespace temp
+profile default
+account unlock;
+--
+alter user oradev23 quota unlimited on users;
+--
+grant developer to oradev23;
+--
+create user oradba23 identified by oracle
+default tablespace users
+temporary tablespace temp
+profile default
+account unlock;
+--
+alter user oradba23 quota unlimited on users;
+--
+grant dba to oradba23;
