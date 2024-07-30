@@ -42,8 +42,12 @@ END;
 -- the same way. You add new members to a collection by using a two-step process that extends 
 -- space and assigns a value to an indexed location.
 --
--- ADT Collection: An ADT collection in SQL requires that you define a collection of a SQL 
--- base data type, such as a string data type.  
+-- ADT Collection: SQL collections of scalar variables are Attribute Data Types (ADTs). 
+-- An ADT collection in SQL requires that you define a collection of a SQL base data type, 
+-- such as a string data type. To be an ADT attribute data type, a collection type must be
+-- a standalone collection type (defined at schema level). For example, you cannot create a 
+-- RECORD type at schema level. Therefore, a RECORD type cannot be an ADT attribute data type.
+-- 
 --
 CREATE OR REPLACE 
     TYPE ora_demo.name_table IS TABLE of VARCHAR2(30);
