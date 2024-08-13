@@ -13,10 +13,16 @@
 -- Record types are defined in PL/SQL blocks.
 --
 -- SQL Collection: This can hold a list of any scalar SQL data type. SQL collections of
--- scalar variables are Attribute Data Types (ADTs). There are two kinds of SQL collections.
--- Varray which is s fixed length array and nested table  It doesn’t have a fixed number of 
--- elements at definition and can scale to meet your runtime needs within your PGA memory cons-
--- traints. SQL collections are defined at schema or PL/SQL blocks.
+-- scalar variables are called Attribute Data Types (ADTs). 
+-- 
+-- There are two kinds of SQL collections:
+-- 
+-- Varray which is a fixed length array and nested table. 
+-- 
+-- Nested table doesn’t have a fixed number of elements at definition and can scale to meet
+-- your runtime needs within your PGA memory constraints. 
+-- 
+-- SQL collections are defined at schema or PL/SQL blocks.
 --
 -- PL/SQL Collection: This can hold a list of any scalar SQL data type or record type, and it
 -- can also hold a list of any PL/SQL record type. PL/SQL collections are implemented using 

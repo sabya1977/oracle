@@ -2,7 +2,10 @@
 -- 
 -- Composite data types differ from scalar data types because they hold copies of more
 -- than one thing.It can hold collections of rows or data. 
--- Beginning Oracle 9i Release 2, following composite data types are offered by Oracle
+--
+-- Beginning Oracle 9i Release 2, there are three composite data types
+-- 
+-- Two are the UDT object and PL/SQL record data types, and the third is a collection. 
 -- 
 -- SQL UDT: Defined at DB level. Two implementation are possible. An Object type which 
 -- supports SQL-level record structure and another which supports Object type and Body 
@@ -25,7 +28,8 @@ BEGIN
 END;
 /
 --
--- PL/SQL Record types: Defined in PL/SQL blocks. We already covered it.
+-- PL/SQL Record types: Defined in PL/SQL blocks. 
+-- We already covered it. Hence examples are ommitted. Refer to attribute_anchoring.sql
 --
 --
 -- SQL Collections: SQL collections can exist for scalar data types or SQL UDT elements.
@@ -120,10 +124,6 @@ CREATE OR REPLACE
     (
         name VARCHAR2 (30),
         age NUMBER
-        -- CONSTRUCTOR FUNCTION person_t RETURN SELF AS RESULT
-        -- MEMBER FUNCTION get_name RETURN VARCHAR2,
-        -- MEMBER FUNCTION set_name (name VARCHAR2) RETURN person_t,
-        -- MEMBER FUNCTION to_string RETURN VARCHAR2
     )
     /* specifies that any object instance and subtype of this type can be created  */
     -- INSTANTIABLE NOT FINAL; 
@@ -256,6 +256,28 @@ BEGIN
         DBMS_OUTPUT.PUT_LINE('Name: ' || person_db(i).name);
         DBMS_OUTPUT.PUT_LINE('ID: ' || person_db(i).id);
     END LOOP;
+END;
+/
+-- 
+-- 
+CREATE OR REPLACE 
+    TYPE ora_demo.loc_obj IS OBJECT
+    (
+        loc_id VARCHAR2(4),
+        loc_name VARCHAR2(20)
+    );
+/ 
+-- 
+GRANT EXECUTE ON ora_demo.loc_obj TO ORADEV21;
+--
+DECLARE 
+    TYPE loc_varray IS VARRAY(5) OF ora_demo.loc_obj;
+    lv_name_list loc_varray := loc_varray (ora_demo.loc_obj(NULL, NULL));
+BEGIN
+    lv_name_list.EXTEND;
+    lv_name_list (lv_name_list.COUNT) := ora_demo.loc_obj('0001','New Delhi');
+    DBMS_OUTPUT.PUT_LINE('LV_NAME_LIST.COUNT=> ' || lv_name_list.COUNT);
+    DBMS_OUTPUT.PUT_LINE('Location ID=> ' || lv_name_list (2).loc_id);
 END;
 /
 

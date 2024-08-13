@@ -34,7 +34,7 @@ commit;
 --
 -- Field anchoring using %TYPE
 --
-   set SERVEROUTPUT on
+set SERVEROUTPUT on
 declare
 	lv_b_name ora_demo.books.b_name%type := 'Paranoid';
 	cursor c_book_cur is
