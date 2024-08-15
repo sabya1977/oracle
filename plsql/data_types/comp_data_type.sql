@@ -215,4 +215,135 @@ FROM
     TABLE(ora_demo.get_person());
 -- 
 -- 
--- PL/SQL Collections :: 
+-- PL/SQL Collections :: PL/SQL Collections are declared as TYPE inside PL/SQL block.
+-- They are not maintained as schema objects in the Database as SQL collections.
+-- 
+-- There are four types of PL/SQL collections:
+--
+-- ADT Collections (TABLE OF and VARRAY)
+-- Associative Arrays of Scalar Variables
+-- Associative Arrays of Composite Variables
+-- UDT Collections 
+-- 
+-- 
+-- PL/SQL Collections :: ADT Collections (VARRAY)
+-- 
+SET SERVEROUTPUT ON
+DECLARE
+    TYPE arv_plsql_varray IS VARRAY(3) OF VARCHAR2(2);
+    /* must be initialized */
+    lv_state arv_plsql_varray := arv_plsql_varray ('NY', 'MD');
+BEGIN
+    /* maximum length of the array */   
+    DBMS_OUTPUT.PUT_LINE('LIMIT=> ' || lv_state.LIMIT);
+    /* current length of the array */   
+    DBMS_OUTPUT.PUT_LINE('COUNT=> ' || lv_state.COUNT);
+    /* Extend space and assign to the new index. */
+    lv_state.EXTEND;
+    lv_state(lv_state.COUNT) := 'NJ';
+    FOR i IN 1..lv_state.COUNT 
+        LOOP
+            DBMS_OUTPUT.PUT_LINE('State Code => ' || i || ' ' || lv_state(i));
+    END LOOP;
+END;
+/
+-- 
+-- PL/SQL Collections :: ADT Collections (TABLE)
+-- 
+DECLARE
+    TYPE arv_plsql_table IS TABLE OF VARCHAR2(2);
+    /* must be initialized */
+    lv_state arv_plsql_table := arv_plsql_table (NULL);
+BEGIN
+    /* LIMIT is blank */
+    DBMS_OUTPUT.PUT_LINE('LIMIT=> ' || lv_state.LIMIT);
+    lv_state(lv_state.COUNT) := 'CA';
+    lv_state.EXTEND;
+    lv_state(lv_state.COUNT) := 'NY';
+    lv_state.EXTEND;
+    lv_state(lv_state.COUNT) := 'NJ';
+    lv_state.EXTEND;
+    lv_state(lv_state.COUNT) := 'MD';
+    lv_state.EXTEND;
+    lv_state(lv_state.COUNT) := 'IL';
+    FOR i IN 1..lv_state.COUNT
+        LOOP
+            DBMS_OUTPUT.PUT_LINE('State Code => ' || i || ' ' || lv_state(i));
+    END LOOP;
+END;
+/
+-- 
+-- PL/SQL Collections :: Associative Arrays of Scalar variable
+-- 
+DECLARE
+    TYPE numbers IS TABLE OF NUMBER INDEX BY VARCHAR2(2);
+    lv_num_collection numbers;
+BEGIN 
+    lv_num_collection ('NJ') := 10002104;
+    lv_num_collection ('MD') := 10002105;
+    lv_num_collection ('IL') := 10002106;
+    lv_num_collection ('CA') := 10002107;
+    DBMS_OUTPUT.PUT_LINE('NJ Pin Code:' || lv_num_collection('NJ'));
+    DBMS_OUTPUT.PUT_LINE('CA Pin Code:' || lv_num_collection('CA'));
+END;
+/
+-- 
+-- PL/SQL Collections ::Associative Arrays of Composite Variables
+-- 
+DECLARE
+    TYPE lrc_city IS RECORD
+    (
+        city_code VARCHAR2(2),
+        city_name VARCHAR2(20)
+    );
+    TYPE lt_city_table IS TABLE OF lrc_city INDEX BY BINARY_INTEGER;
+    lv_city_list lt_city_table;
+BEGIN   
+    lv_city_list(1).city_code := 'NY';
+    lv_city_list(1).city_name := 'New York';
+    lv_city_list(2).city_code := 'CA';
+    lv_city_list(2).city_name := 'California';
+    lv_city_list(3).city_code := 'NJ';
+    lv_city_list(3).city_name := 'New Jersy';
+    lv_city_list(4).city_code := 'IL';
+    lv_city_list(4).city_name := 'Illinois';
+    lv_city_list(5).city_code := 'OH';
+    lv_city_list(5).city_name := 'Ohio';
+
+    FOR i IN 1 .. lv_city_list.COUNT 
+    LOOP
+        DBMS_OUTPUT.PUT_LINE('City Code,Name=> ' || lv_city_list(i).city_code 
+                    || ',' || lv_city_list(i).city_name);
+    END LOOP;
+END;
+/
+-- 
+-- PL/SQL Collections :: UDT Collections
+-- 
+CREATE OR REPLACE TYPE 
+        ora_demo.obj_country IS OBJECT
+    (
+        country_code     VARCHAR2(2),
+        country_name    VARCHAR2 (20),
+        country_ISD     VARCHAR2 (3)
+    );
+/
+-- 
+GRANT EXECUTE ON ora_demo.obj_country TO ORADEV21;
+-- 
+DECLARE
+    TYPE lt_cty_list IS VARRAY(5) OF ora_demo.obj_country;
+    lv_cty_list lt_cty_list := lt_cty_list (ora_demo.obj_country ('IN', 'India', '91'));
+BEGIN
+    lv_cty_list.EXTEND;
+    lv_cty_list (lv_cty_list.COUNT) := ora_demo.obj_country ('CN', 'China', '86');
+    FOR i IN 1..lv_cty_list.COUNT
+    LOOP
+        DBMS_OUTPUT.PUT_LINE('City Code, Name, ID=> ' || 
+                        lv_cty_list(i).country_code || ', '|| 
+                        lv_cty_list(i).country_name || ', ' ||
+                        lv_cty_list(i).country_ISD
+                            );
+    END LOOP;
+END;
+/
