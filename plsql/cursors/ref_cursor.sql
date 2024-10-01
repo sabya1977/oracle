@@ -6,12 +6,12 @@
 -- passing results of queries (the rows returned by fetches against a cursor) between dif‐
 -- ferent PL/SQL programs. We can also return result set to client using cursor varaiable.
 -- 
--- Strong cursor variable (REF CURSOR with RETURN): It attaches a record type (or row type)
--- to the cursor variable type at the moment of declaration. Any cursor variable declared using
--- that type can only FETCH INTO data structures that match the specified record type. The adva-
--- ntage of a strong type is that the compiler can determine whether or not the developer has 
--- properly matched up the cursor variable’s FETCH statements with its cursor object’s query 
--- list.
+-- Strong cursor variable (REF CURSOR with RETURN): It attaches a record type 
+-- (or row type) to the cursor variable type at the moment of declaration. Any
+-- cursor variable declared using that type can only FETCH INTO data structures
+-- that match the specified record type. The advantage of a strong type is that
+-- the compiler can determine whether or not the developer has properly matched
+-- up the cursor variable’s FETCH statements with its cursor object’s query list.
 --
 SET SERVEROUTPUT ON
 DECLARE

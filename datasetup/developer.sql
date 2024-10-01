@@ -56,6 +56,12 @@ profile default
 account unlock;
 --
 alter user oradev23 quota unlimited on users;
+-- 
+grant execute on dbms_stats      to oradev23;
+grant select  on sys.V_$STATNAME to oradev23;
+grant select  on sys.V_$MYSTAT   to oradev23;
+grant select  on sys.V_$LATCH    to oradev23;
+grant select  on sys.V_$TIMER    to oradev23;
 --
 grant developer to oradev23;
 --

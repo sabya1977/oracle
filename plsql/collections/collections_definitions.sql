@@ -108,7 +108,7 @@ END;
 CREATE OR REPLACE TYPE 
     ora_demo.obj_country IS OBJECT
     (
-        country_code     VARCHAR2(2),
+        country_code    VARCHAR2(2),
         country_name    VARCHAR2 (20),
         country_ISD     VARCHAR2 (3)
     );

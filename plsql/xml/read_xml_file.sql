@@ -124,6 +124,3 @@ EXCEPTION
     RAISE;
 END;
 /
--- 
--- SQL/XML functions
--- 
