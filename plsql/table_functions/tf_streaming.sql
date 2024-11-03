@@ -25,6 +25,16 @@ CREATE TABLE stg_customer_trn
     cust_state      VARCHAR2(40)
 );
 -- 
+CREATE TABLE stg_customer_final
+(
+    cust_id         NUMBER,
+    cust_name       VARCHAR2(60),
+    cust_gender     CHAR(10),
+    cust_dob_yr     NUMBER(4),
+    cust_city       VARCHAR2(30),
+    cust_state      VARCHAR2(40)
+);
+-- 
 -- Define customer object type and nested table of the customer object type
 -- 
 CREATE OR REPLACE TYPE customer_ot 
