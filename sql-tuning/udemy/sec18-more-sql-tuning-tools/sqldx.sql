@@ -551,13 +551,13 @@ BEGIN
                    AND owner = 'SYS'
                    AND data_type = 'VARCHAR2'
                    AND data_length = 13
-                   AND (table_name LIKE 'WR%' OR table_name LIKE 'DBA%' OR table_name LIKE 'SQL%' OR table_name LIKE 'GV!_%' ESCAPE '!' /* GV_$ */)
+                   AND (table_name LIKE 'WR%' OR table_name LIKE 'DBA%' OR table_name LIKE 'SQL%' OR table_name LIKE 'GV!_%' ESCAPE '!' /* V_$ */)
                    AND table_name NOT LIKE 'SQLT%'
 				   AND table_name NOT LIKE '%LOGSTDBY%'
                  ORDER BY
                        table_name)
       LOOP
-        l_table_name := REPLACE(i.table_name, 'GV_$', 'GV$');
+        l_table_name := REPLACE(i.table_name, 'V_$', 'GV$');
         l_file_name := REPLACE(l_table_name, '$', 's');
 
         l_cnt := NULL;
@@ -675,7 +675,7 @@ BEGIN
                    AND c1.column_name IN ('SIGNATURE', 'EXACT_MATCHING_SIGNATURE')
                    AND c1.owner = 'SYS'
                    AND c1.data_type = 'NUMBER'
-                   AND (c1.table_name LIKE 'WR%' OR c1.table_name LIKE 'DBA%' OR c1.table_name LIKE 'SQL%' OR c1.table_name LIKE 'GV!_%' ESCAPE '!' /* GV_$ */)
+                   AND (c1.table_name LIKE 'WR%' OR c1.table_name LIKE 'DBA%' OR c1.table_name LIKE 'SQL%' OR c1.table_name LIKE 'GV!_%' ESCAPE '!' /* V_$ */)
                    AND c1.table_name NOT LIKE 'SQLT%'
 				   AND c1.table_name NOT LIKE '%LOGSTDBY%'
                    AND NOT EXISTS (
@@ -689,7 +689,7 @@ BEGIN
                  ORDER BY
                        c1.table_name)
       LOOP
-        l_table_name := REPLACE(i.table_name, 'GV_$', 'GV$');
+        l_table_name := REPLACE(i.table_name, 'V_$', 'GV$');
         l_file_name := REPLACE(l_table_name, '$', 's');
 
         l_cnt := NULL;
@@ -808,13 +808,13 @@ BEGIN
                    AND c1.column_name IN ('SIGNATURE', 'FORCE_MATCHING_SIGNATURE')
                    AND c1.owner = 'SYS'
                    AND c1.data_type = 'NUMBER'
-                   AND (c1.table_name LIKE 'WR%' OR c1.table_name LIKE 'DBA%' OR c1.table_name LIKE 'SQL%' OR c1.table_name LIKE 'GV!_%' ESCAPE '!' /* GV_$ */)
+                   AND (c1.table_name LIKE 'WR%' OR c1.table_name LIKE 'DBA%' OR c1.table_name LIKE 'SQL%' OR c1.table_name LIKE 'GV!_%' ESCAPE '!' /* V_$ */)
                    AND c1.table_name NOT LIKE 'SQLT%'
 				   AND c1.table_name NOT LIKE '%LOGSTDBY%'
                  ORDER BY
                        c1.table_name)
       LOOP
-        l_table_name := REPLACE(i.table_name, 'GV_$', 'GV$');
+        l_table_name := REPLACE(i.table_name, 'V_$', 'GV$');
         l_file_name := REPLACE(l_table_name, '$', 's');
 
         l_cnt := NULL;
@@ -952,7 +952,7 @@ BEGIN
                          ELSE 7
                          END)
         LOOP
-          l_table_name := REPLACE(i.table_name, 'GV_$', 'GV$');
+          l_table_name := REPLACE(i.table_name, 'V_$', 'GV$');
 	  l_file_name := REPLACE(l_table_name, '$', 's');
 
 	  l_cnt := NULL;
@@ -1049,15 +1049,15 @@ BEGIN
       FOR i IN (SELECT DISTINCT table_name
                   FROM dba_tab_cols^^my_dblink.
                  WHERE owner = 'SYS'
-                   AND (table_name LIKE 'WR%' OR table_name LIKE 'DBA%' OR table_name LIKE 'SQL%' OR table_name LIKE 'GV!_%' ESCAPE '!' /* GV_$ */)
+                   AND (table_name LIKE 'WR%' OR table_name LIKE 'DBA%' OR table_name LIKE 'SQL%' OR table_name LIKE 'GV!_%' ESCAPE '!' /* V_$ */)
                    AND table_name NOT LIKE 'SQLT%'
 				   AND table_name NOT LIKE '%LOGSTDBY%'
-                   --AND table_name IN ('DBA_HIST_SNAPSHOT', 'DBA_OBJECTS', 'GV_$PARAMETER2')
-                   AND table_name IN ('DBA_HIST_SNAPSHOT', 'GV_$PARAMETER2')
+                   --AND table_name IN ('DBA_HIST_SNAPSHOT', 'DBA_OBJECTS', 'V_$PARAMETER2')
+                   AND table_name IN ('DBA_HIST_SNAPSHOT', 'V_$PARAMETER2')
                  ORDER BY
                        table_name)
       LOOP
-        l_table_name := REPLACE(i.table_name, 'GV_$', 'GV$');
+        l_table_name := REPLACE(i.table_name, 'V_$', 'GV$');
         l_file_name := REPLACE(l_table_name, '$', 's');
 
         l_cnt := NULL;

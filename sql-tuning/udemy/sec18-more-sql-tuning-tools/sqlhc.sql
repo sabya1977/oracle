@@ -3373,7 +3373,7 @@ SELECT /*+ NO_MERGE */
   FROM dba_tab_cols
  WHERE :shared_cursor = 'Y'
    AND owner = 'SYS'
-   AND table_name = 'GV_$SQL_SHARED_CURSOR'
+   AND table_name = 'V_$SQL_SHARED_CURSOR'
    AND data_type = 'VARCHAR2'
    AND data_length = 1
  ORDER BY
@@ -3396,7 +3396,7 @@ SELECT /*+ NO_MERGE */
   FROM dba_tab_cols
  WHERE :shared_cursor = 'Y'
    AND owner = 'SYS'
-   AND table_name = 'GV_$SQL_SHARED_CURSOR'
+   AND table_name = 'V_$SQL_SHARED_CURSOR'
    AND data_type = 'VARCHAR2'
    AND data_length = 1
  ORDER BY

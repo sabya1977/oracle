@@ -1,0 +1,5 @@
+-- 
+-- Desc: Illustrate the use of KEEP clause in analytic SQL
+-- Date: 12-10-2024
+-- Author: Sabyasachi Mitra
+-- 
