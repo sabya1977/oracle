@@ -1,0 +1,200 @@
+🏎️ Constructors
+A constructor is the company or team that designs and builds the chassis (and sometimes the engine) of the F1 car. Examples:
+Mercedes-AMG Petronas
+Scuderia Ferrari
+Red Bull Racing
+----------------------
+Each constructor is responsible for:
+Designing the car
+Registering for the championship
+Competing with two drivers under their team
+-------------------------------------------------
+-------------------------------------------------
+📊 ConstructorStandings
+This refers to the Championship points table for constructors. Teams earn points based on their drivers' race finishes.
+-------------------------------------------------
+Points from both drivers are added for the team total.
+The Constructor's Championship is separate from the Driver's Championship.
+It determines team rankings and prize money at season’s end.
+-------------------------------------------------
+-------------------------------------------------
+🏁 ConstructorResults
+These are race-by-race results for a constructor across the season. It includes:
+-------------------------------------------------
+Finishing positions of each driver
+Points scored in that race
+DNFs (Did Not Finish), penalties, etc.
+-------------------------------------------------
+-------------------------------------------------
+📍 Circuits
+Each circuit is a unique race track or venue. Examples:
+-------------------------------------------------
+Monza (Italy)
+Silverstone (UK)
+Suzuka (Japan)
+Details include:
+Track length
+Number of laps
+Layout
+Location and weather characteristics
+-------------------------------------------------
+-------------------------------------------------
+🛑 PitStops
+These are when a car stops in the pit lane during a race or qualifying session.
+-------------------------------------------------
+Common reasons:
+Tyre change (most frequent)
+Front wing repair
+Serving penalties (like 5-second or 10-second stop-go)
+Pit stop data includes:
+Driver
+Time of stop (lap number)
+Duration
+-------------------------------------------------
+-------------------------------------------------
+⚡ SprintResults
+These are the results of a Sprint Race, a shorter race (usually ~100 km) held on certain weekends.
+-------------------------------------------------
+Key points:
+Usually on Saturday before the main race
+Offers points (though fewer than a full race)
+Sets the grid for the main race (in some formats)
+-------------------------------------------------
+-------------------------------------------------
+🏆 Results
+Refers to final classifications of a race:
+-------------------------------------------------
+Positions of all drivers
+Lap times
+Points awarded
+Gaps to the winner or next car
+Often used for both qualifying results and race results.
+-------------------------------------------------
+-------------------------------------------------
+🏎️ constructors
+Describes the F1 constructor teams.
+================================================================
+| Column           | Description                               |
+| ---------------- | ----------------------------------------- |
+| `constructorId`  | Primary key (internal ID for team)        |
+| `constructorRef` | Unique string reference (e.g., `ferrari`) |
+| `name`           | Full team name (e.g., `Scuderia Ferrari`) |
+| `nationality`    | Team nationality (e.g., `Italian`)        |
+| `url`            | Link to official constructor profile      |
+================================================================
+📊 constructorStandings
+Points table for constructors per race.
+=======================================================================
+| Column                   | Description                             |
+| ------------------------ | --------------------------------------- |
+| `constructorStandingsId` | Primary key                             |
+| `raceId`                 | Foreign key to `races` table            |
+| `constructorId`          | Foreign key to `constructors` table     |
+| `points`                 | Points scored in that race              |
+| `position`               | Position in standings (as of that race) |
+| `positionText`           | Text version (e.g., `R` for retired)    |
+| `wins`                   | Number of wins so far in the season     |
+=======================================================================
+🏁 constructorResults
+Individual race results for each constructor. (Not always populated in Ergast)
+===============================================================
+| Column                 | Description                        |
+| ---------------------- | ---------------------------------- |
+| `constructorResultsId` | Primary key                        |
+| `raceId`               | Foreign key to `races`             |
+| `constructorId`        | Foreign key to `constructors`      |
+| `points`               | Points scored in that race by team |
+| `status`               | Status (optional or legacy)        |
+===============================================================
+📍 circuits
+Information about each race circuit.
+=======================================================
+| Column       | Description                          |
+| ------------ | ------------------------------------ |
+| `circuitId`  | Primary key                          |
+| `circuitRef` | Unique string (e.g., `silverstone`)  |
+| `name`       | Official circuit name                |
+| `location`   | City or locality                     |
+| `country`    | Country                              |
+| `lat`, `lng` | Latitude and longitude (for mapping) |
+| `alt`        | Altitude (optional)                  |
+| `url`        | URL to more info                     |
+=======================================================
+🛑 pitStops
+Pit stop data per driver per race.
+==========================================================
+| Column     | Description                               |
+| ---------- | ----------------------------------------- |
+| `raceId`   | Foreign key to `races`                    |
+| `driverId` | Foreign key to `drivers`                  |
+| `stop`     | Pit stop number (1, 2, ...)               |
+| `lap`      | Lap during which the stop occurred        |
+| `time`     | Timestamp or race time when stop occurred |
+| `duration` | Length of stop (e.g., `2.5` seconds)      |
+==========================================================
+⚡ sprintResults
+Results of Sprint races. Only present for seasons since 2021.
+=================================================================
+| Column          | Description                                 |
+| --------------- | ------------------------------------------- |
+| `raceId`        | Foreign key to `races`                      |
+| `driverId`      | Foreign key to `drivers`                    |
+| `constructorId` | Foreign key to `constructors`               |
+| `number`        | Car number                                  |
+| `grid`          | Starting position in the sprint             |
+| `position`      | Final position in the sprint                |
+| `positionText`  | Final result (can include letters like DNF) |
+| `points`        | Points awarded for the sprint               |
+| `laps`          | Number of laps completed                    |
+| `statusId`      | Foreign key to `status`                     |
+=================================================================
+🏆 results
+Main race results per driver per race.
+=====================================================================
+| Column            | Description                                   |
+| ----------------- | --------------------------------------------- |
+| `resultId`        | Primary key                                   |
+| `raceId`          | Foreign key to `races`                        |
+| `driverId`        | Foreign key to `drivers`                      |
+| `constructorId`   | Foreign key to `constructors`                 |
+| `grid`            | Starting grid position                        |
+| `position`        | Final finishing position                      |
+| `positionText`    | Text version (DNF, DQ, NC, etc.)              |
+| `points`          | Points earned                                 |
+| `laps`            | Laps completed                                |
+| `time`            | Total race time (nullable if DNF)             |
+| `milliseconds`    | Race time in milliseconds                     |
+| `fastestLap`      | Lap number of fastest lap (if any)            |
+| `rank`            | Rank of fastest lap time (across drivers)     |
+| `fastestLapTime`  | Time string (e.g., `1:31.478`)                |
+| `fastestLapSpeed` | Speed (in km/h)                               |
+| `statusId`        | Foreign key to `status` (reason if DNF, etc.) |
+=====================================================================
+🏇races
+========================================================
+| Column      | Description                            |
+| ----------- | -------------------------------------- |
+| `raceId`    | Primary key                            |
+| `year`      | Season year                            |
+| `round`     | Race number in the season              |
+| `circuitId` | Foreign key to `circuits`              |
+| `name`      | Race name (e.g., `British Grand Prix`) |
+| `date`      | Race date                              |
+| `time`      | Start time                             |
+| `url`       | Official race URL                      |
+========================================================
+🚗 drivers
+| Column                | Description                 |
+| --------------------- | --------------------------- |
+| `driverId`            | Primary key                 |
+| `driverRef`           | Unique string               |
+| `code`                | 3-letter code (e.g., `HAM`) |
+| `forename`, `surname` | Driver's full name          |
+| `dob`                 | Date of birth               |
+| `nationality`         | Driver's nationality        |
+| `url`                 | Official profile link       |
+========================================================
+status                                                        
+| ---------- |--------------------------------------------------------------------- |
+| `statusId` | Primary key                                            |
+| `status`   | Reason for finishing or not (e.g., `Finished`, `Collision`,`Engine`)  | 
