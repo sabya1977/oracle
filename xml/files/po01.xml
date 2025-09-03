@@ -1,0 +1,41 @@
+<?xml version='1.0'  encoding='UTF-8' ?>
+<PurchaseOrders>
+<PurchaseOrder>
+  <Reference>ACABRIO-11PDT</Reference>
+  <Actions>
+    <Action>
+      <User>ACABRIO-11</User>
+    </Action>
+  </Actions>
+  <Rejection/>
+  <Requestor>A. Cabrio 11</Requestor>
+  <User>ACABRIO-11</User>
+  <CostCenter>A11</CostCenter>
+  <ShippingInstructions>
+    <name>A. Cabrio 11</name>
+    <Address>
+      <street>11 Sporting Green Centre, Science Club, building 11, Magdalen</street>
+      <city>SFO-11</city>
+      <state>CA</state>
+      <zipCode>99236</zipCode>
+      <country>United States of America</country>
+    </Address>
+    <telephone>269-11-4036</telephone>
+  </ShippingInstructions>
+  <SpecialInstructions>Priority Overnight</SpecialInstructions>
+  <LineItems>
+    <LineItem ItemNumber="1">
+      <Part Description="Face to Face: First Seven Years" UnitPrice="19.95">11</Part>
+      <Quantity>11</Quantity>
+    </LineItem>
+    <LineItem ItemNumber="2">
+      <Part Description="Runaway" UnitPrice="27.95">11</Part>
+      <Quantity>11</Quantity>
+    </LineItem>
+    <LineItem ItemNumber="3">
+      <Part Description="Founding Fathers: Men Who Shaped" UnitPrice="19.95">11</Part>
+      <Quantity>11</Quantity>
+    </LineItem>
+  </LineItems>
+</PurchaseOrder>
+</PurchaseOrders>
